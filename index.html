@@ -1,0 +1,2118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>بنك أسئلة التشريح – Dr Adel Elhawary</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Noto Sans", Arial, sans-serif;
+      background: #f5f7fb;
+      color: #222;
+      direction: rtl;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      color: #1e3a8a;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .subtitle-en {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .stat-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 12px 14px;
+      box-shadow: 0 1px 4px rgba(15,23,42,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.2);
+    }
+
+    .filters-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .filter-title {
+      font-size: 0.8rem;
+      color: #4b5563;
+      margin-left: 8px;
+      align-self: center;
+    }
+
+    .btn-filter {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-filter.active {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #fff;
+    }
+
+    .btn-filter:hover {
+      background: #e5e7eb;
+    }
+
+    .questions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 30px;
+    }
+
+    .question-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px 14px 10px;
+      box-shadow: 0 1px 4px rgba(15,23,42,0.06);
+      border: 1px solid #e5e7eb;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .question-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.7rem;
+      color: #6b7280;
+    }
+
+    .badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge-secondary {
+      background: #f3f4f6;
+      border-color: #e5e7eb;
+      color: #374151;
+    }
+
+    .question-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .question-text-en {
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+      color: #111827;
+      text-align: left;
+      direction: ltr;
+    }
+
+    .question-text-ar {
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .option-btn {
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      padding: 8px 10px;
+      background: #f9fafb;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-align: right;
+      transition: all 0.15s ease;
+    }
+
+    .option-btn:hover {
+      background: #e5e7eb;
+    }
+
+    .option-btn.correct {
+      background: #dcfce7;
+      border-color: #16a34a;
+      color: #166534;
+    }
+
+    .option-btn.incorrect {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #991b1b;
+    }
+
+    .answer-box {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #f9fafb;
+      border: 1px dashed #d1d5db;
+      font-size: 0.8rem;
+      color: #374151;
+    }
+
+    .answer-box strong {
+      color: #111827;
+    }
+
+    .no-results {
+      text-align: center;
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>بنك أسئلة التشريح – Dr Adel Elhawary</h1>
+      <p>Interactive Anatomy & Ethics Question Bank for Medical Imaging Students</p>
+      <p class="subtitle-en">Choose the correct answer, check explanations, and track your performance.</p>
+    </header>
+
+    <section class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-label">إجمالي الأسئلة</span>
+        <span class="stat-value" id="stat-total">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">تمت الإجابة</span>
+        <span class="stat-value" id="stat-answered">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">الإجابات الصحيحة</span>
+        <span class="stat-value" id="stat-correct">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">نسبة النجاح %</span>
+        <span class="stat-value" id="stat-percentage">0%</span>
+      </div>
+    </section>
+
+    <section class="controls">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="ابحث في نص السؤال (EN/AR) أو Group أو Category ..." />
+      </div>
+
+      <div class="filters-group" id="groupFilters">
+        <span class="filter-title">المجموعات:</span>
+        <button class="btn-filter active" data-group="all">الكل</button>
+        <button class="btn-filter" data-group="Group A">Group A</button>
+        <button class="btn-filter" data-group="Group B">Group B</button>
+        <button class="btn-filter" data-group="Group C">Group C</button>
+        <button class="btn-filter" data-group="Group D">Group D</button>
+      </div>
+
+      <div class="filters-group" id="categoryFilters">
+        <span class="filter-title">الفئات:</span>
+        <button class="btn-filter active" data-category="all">الكل</button>
+        <button class="btn-filter" data-category="Ethics">Ethics</button>
+        <button class="btn-filter" data-category="Human Relations">Human Relations</button>
+        <button class="btn-filter" data-category="Consent">Consent</button>
+        <button class="btn-filter" data-category="Negligence">Negligence</button>
+      </div>
+    </section>
+
+    <section id="questionsContainer" class="questions-list"></section>
+    <div id="noResults" class="no-results" style="display:none;">لا توجد أسئلة مطابقة لخيارات البحث / الفلترة الحالية.</div>
+  </div>
+
+  <script>
+    // ========= 1) بنك الأسئلة (الدفعة الأولى) =========
+    // ملاحظة: part (Group A/B/...) و ar (الترجمة العربية المختصرة) و explanation (شرح عربي)
+    // ممكن تعدلهم زي ما تحب لاحقًا.
+    const allQuestions = [
+      {
+        id: 1,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A radiology manager notices that employees have become resistant to a new communication system. According to Lewin's model, which action initiates the needed transformation?",
+        ar: "مدير الأشعة يلاحظ مقاومة الموظفين لنظام تواصل جديد؛ طبقًا لنموذج لوين، ما أول خطوة للتغيير؟",
+        options: [
+          "Reinforcing new behaviors",
+          "Creating awareness of the need to change",
+          "Training after implementation",
+          "Imposing strict policies"
+        ],
+        correct: 1,
+        explanation: "أول مرحلة في نموذج لوين هي خلق وعي بالحاجة إلى التغيير (Unfreezing)."
+      },
+      {
+        id: 2,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A healthcare worker who modifies their tone and posture to match a patient's style is primarily demonstrating which human relations skill?",
+        ar: "عامل رعاية صحية يغيّر نبرة صوته ولغته الجسدية بما يناسب المريض؛ أي مهارة علاقات إنسانية يطبق؟",
+        options: [
+          "Negotiation",
+          "Empathy",
+          "Communication",
+          "Stress management"
+        ],
+        correct: 2,
+        explanation: "تعديل أسلوب الحديث ولغة الجسد جزء من مهارات التواصل الفعّال مع المريض."
+      },
+      {
+        id: 3,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A technician frequently misinterprets colleagues' emotional cues, causing conflict. This is NOT a problem in which component of emotional intelligence?",
+        ar: "فني يسيء فهم الإشارات الانفعالية لزملائه مما يسبب صراعًا؛ هذا ليس خللًا في أي عنصر من عناصر الذكاء الانفعالي؟",
+        options: [
+          "Self-management",
+          "Social awareness",
+          "Relationship management",
+          "Self-awareness"
+        ],
+        correct: 1,
+        explanation: "سوء فهم مشاعر الآخرين يرتبط بالوعي الاجتماعي وإدارة العلاقات، وليس بضعف الوعي الاجتماعي وحده في صياغة السؤال الأصلية."
+      },
+      {
+        id: 4,
+        part: "Group A",
+        category: "Human Relations",
+        en: "When employees show increased participation in decision-making due to supportive communication, which benefit of human relations is observed?",
+        ar: "عندما يزداد اشتراك الموظفين في اتخاذ القرار بسبب تواصل داعم؛ أي فائدة من العلاقات الإنسانية تظهر؟",
+        options: [
+          "Innovation",
+          "Employee retention",
+          "Increased participation",
+          "Creativity"
+        ],
+        correct: 2,
+        explanation: "التواصل الداعم يعزز مشاركة العاملين في القرارات مما يزيد بقاءهم في العمل (الاحتفاظ بالموظفين)."
+      },
+      {
+        id: 5,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A supervisor encourages open discussion during a conflict to allow each employee to feel heard. This demonstrates:",
+        ar: "مشرف يشجع النقاش المفتوح أثناء الصراع ليشعر كل موظف أنه مسموع؛ هذا يوضح:",
+        options: [
+          "Trust-building",
+          "Conflict resolution",
+          "Social comparison",
+          "Job influence"
+        ],
+        correct: 1,
+        explanation: "إدارة الحوار بشكل مفتوح هي أحد أساليب حل النزاع وبناء الثقة بين أعضاء الفريق."
+      },
+      {
+        id: 6,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A nurse who uses positive self-talk during stressful emergencies is applying which component of emotional intelligence?",
+        ar: "ممرضة تستخدم حديثًا ذاتيًا إيجابيًا في المواقف الطارئة المجهِدة؛ أي عنصر من عناصر الذكاء الانفعالي تطبّق؟",
+        options: [
+          "Self-management",
+          "Empathy",
+          "Social awareness",
+          "Relationship management"
+        ],
+        correct: 0,
+        explanation: "التحكم في الأفكار والمشاعر تحت الضغط جزء من إدارة الذات."
+      },
+      {
+        id: 7,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A team displaying mutual trust, clear goals, and strong communication reflects which characteristic?",
+        ar: "فريق يُظهر ثقة متبادلة وأهدافًا واضحة وتواصلًا قويًا؛ أي سمة يعكسها؟",
+        options: [
+          "Effective negotiation",
+          "Successful team performance",
+          "Organizational culture",
+          "Personal characteristics"
+        ],
+        correct: 1,
+        explanation: "الثقة والأهداف الواضحة والتواصل الفعّال من سمات الأداء الناجح للفريق."
+      },
+      {
+        id: 8,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A worker who frequently compares themselves to successful colleagues to gain confidence relies on:",
+        ar: "عامل يقارن نفسه كثيرًا بزملاء ناجحين ليزيد ثقته بنفسه؛ يعتمد على:",
+        options: [
+          "Social persuasion",
+          "Social comparison",
+          "Emotional arousal",
+          "Experience"
+        ],
+        correct: 1,
+        explanation: "رفع الثقة بالنفس عن طريق مقارنة الأداء بالآخرين يسمى المقارنة الاجتماعية."
+      },
+      {
+        id: 9,
+        part: "Group A",
+        category: "Human Relations",
+        en: "Which scenario best illustrates chronic stress?",
+        ar: "أي موقف يوضح الضغط المزمن؟",
+        options: [
+          "A busy shift in the emergency room",
+          "Daily recurring job pressure for months",
+          "Stress during an exam",
+          "A sudden conflict with a coworker"
+        ],
+        correct: 1,
+        explanation: "الضغط المزمن يكون مستمرًا لفترات طويلة مثل ضغط العمل اليومي المتكرر لشهور."
+      },
+      {
+        id: 10,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A healthcare unit restructures roles without explaining the reason. Productivity drops. Which concept from Lewin's change model was ignored?",
+        ar: "إعادة هيكلة الأدوار بوحدة صحية دون توضيح السبب أدت لانخفاض الإنتاجية؛ أي مرحلة في تغيير لوين تم تجاهلها؟",
+        options: [
+          "Unfreezing",
+          "Refreezing",
+          "Motivation",
+          "Empathy"
+        ],
+        correct: 0,
+        explanation: "عدم تهيئة العاملين وشرح أسباب التغيير يعني فشل مرحلة فك الجمود (Unfreezing)."
+      },
+            
+      {
+        id: 11,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A team with complementary skills and shared accountability is best defined as a:",
+        ar: "فريق ذو مهارات متكاملة ومسؤولية مشتركة يُعرّف بأنه:",
+        options: [
+          "Group",
+          "Committee",
+          "Team",
+          "Panel"
+        ],
+        correct: 2,
+        explanation: "الفريق يتميز بمهارات متكاملة ومسؤولية مشتركة عن النتائج."
+      },
+      {
+        id: 12,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A manager who adapts tasks to match employees' abilities demonstrates understanding of:",
+        ar: "مدير يكيّف المهام بما يناسب قدرات الموظفين؛ يوضح فهمه لـ:",
+        options: [
+          "Organizational culture",
+          "Job influence",
+          "Personal characteristics of workers",
+          "Supervisory-management influence"
+        ],
+        correct: 2,
+        explanation: "تكييف المهام يعتمد على معرفة خصائص وقدرات الأفراد الشخصية."
+      },
+      {
+        id: 13,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A technician who struggles when coworkers make suggestions likely lacks:",
+        ar: "فني يجد صعوبة عندما يقدم الزملاء اقتراحات؛ غالبًا يفتقر إلى:",
+        options: [
+          "Self-acceptance",
+          "Stress management",
+          "Trust",
+          "Empathy"
+        ],
+        correct: 0,
+        explanation: "من لا يتقبل آراء الآخرين غالباً لديه مشكلة في تقبل الذات."
+      },
+      {
+        id: 14,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A supervisor who encourages ideas during conflicts improves:",
+        ar: "مشرف يشجع طرح الأفكار أثناء النزاعات؛ يحسن جانب:",
+        options: [
+          "Self-disclosure",
+          "Communication",
+          "Conflict resolution",
+          "Organizational flexibility"
+        ],
+        correct: 2,
+        explanation: "تشجيع الأفكار أثناء النزاع يساعد على حلّه بشكل فعّال."
+      },
+      {
+        id: 15,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A staff member who is consistently calm under pressure relies on:",
+        ar: "موظف يحافظ على هدوئه باستمرار تحت الضغط يعتمد على:",
+        options: [
+          "Self-confidence",
+          "Motivation",
+          "Stress management",
+          "Self-awareness"
+        ],
+        correct: 2,
+        explanation: "التحكم في الاستجابة للضغوط يرجع لإدارة الضغط وليس فقط الثقة أو الدافعية."
+      },
+      {
+        id: 16,
+        part: "Group A",
+        category: "Human Relations",
+        en: "When a nurse interprets a patient's distress even without verbal cues, this displays:",
+        ar: "ممرضة تفسّر ضيق المريض رغم عدم وجود كلام صريح؛ هذا يوضح:",
+        options: [
+          "Social awareness",
+          "Self-awareness",
+          "Trust",
+          "Multi-tasking"
+        ],
+        correct: 0,
+        explanation: "فهم مشاعر الآخرين من تعبيراتهم وغير كلامهم هو وعي اجتماعي."
+      },
+      {
+        id: 17,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A team that consistently shares information and solves problems collaboratively exhibits:",
+        ar: "فريق يشارك المعلومات باستمرار ويحل المشكلات بشكل تعاوني؛ يُظهر:",
+        options: [
+          "Job influence",
+          "Positive synergy",
+          "Adjourning",
+          "Acute stress"
+        ],
+        correct: 1,
+        explanation: "التعاون المستمر يخلق طاقة إيجابية مشتركة (التآزر الإيجابي)."
+      },
+      {
+        id: 18,
+        part: "Group A",
+        category: "Human Relations",
+        en: "An employee who uses accomplishments to build future confidence uses which strategy?",
+        ar: "موظف يستند إلى إنجازاته السابقة لزيادة ثقته مستقبلًا يستخدم أي إستراتيجية؟",
+        options: [
+          "Social arousal",
+          "Actual experience",
+          "Persuasion",
+          "Self-disclosure"
+        ],
+        correct: 1,
+        explanation: "الخبرة الفعلية السابقة مصدر قوي لتعزيز الثقة بالنفس."
+      },
+      {
+        id: 19,
+        part: "Group A",
+        category: "Human Relations",
+        en: "When a group begins to establish rules and harmony, which team phase is occurring?",
+        ar: "عندما يبدأ الفريق في وضع القواعد وتحقيق الانسجام؛ أي مرحلة من مراحل الفريق تحدث؟",
+        options: [
+          "Storming",
+          "Norming",
+          "Forming",
+          "Adjourning"
+        ],
+        correct: 1,
+        explanation: "مرحلة الـ Norming تتميز بوضع القواعد وزيادة التماسك."
+      },
+      {
+        id: 20,
+        part: "Group A",
+        category: "Human Relations",
+        en: "A technician who frequently argues due to emotional reactivity lacks:",
+        ar: "فني يكثر الجدال بسبب التفاعل الانفعالي السريع يفتقر إلى:",
+        options: [
+          "Self-management",
+          "Relationship management",
+          "Empathy",
+          "Self-confidence"
+        ],
+        correct: 0,
+        explanation: "التحكم في الانفعال جزء أساسي من إدارة الذات."
+      },
+      {
+        id: 21,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A manager building a culture of honesty and transparency supports:",
+        ar: "مدير يبني ثقافة من الصدق والشفافية يدعم:",
+        options: [
+          "Emotional arousal",
+          "Self-disclosure",
+          "Trust",
+          "Motivation"
+        ],
+        correct: 2,
+        explanation: "الصدق والشفافية يعززان الثقة داخل الفريق."
+      },
+      {
+        id: 22,
+        part: "Group B",
+        category: "Human Relations",
+        en: "When an employee's family problems reduce productivity, this reflects:",
+        ar: "عندما تؤثر مشكلات الأسرة على إنتاجية الموظف فهذا يعكس تأثير:",
+        options: [
+          "Job influence",
+          "Team influence",
+          "Family influence",
+          "Organizational culture"
+        ],
+        correct: 2,
+        explanation: "العوامل الأسرية من القوى المؤثرة على السلوك في العمل."
+      },
+      {
+        id: 23,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A patient seen as 'difficult' due to misunderstanding instructions primarily needs:",
+        ar: "مريض يُعتبر «صعب» بسبب سوء فهم التعليمات يحتاج أساسًا إلى:",
+        options: [
+          "Strict routines",
+          "Short speech",
+          "Simple, clear explanations",
+          "Conflict mediation"
+        ],
+        correct: 2,
+        explanation: "تحسين الشرح الواضح والمبسّط يقلل سوء الفهم ويُحسّن التعاون."
+      },
+      {
+        id: 24,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A workplace with high mistrust and slow decisions lacks:",
+        ar: "مكان عمل يسوده عدم الثقة وبطء اتخاذ القرار يفتقر إلى:",
+        options: [
+          "Stress management",
+          "Trust",
+          "Negotiation",
+          "Organizational structure"
+        ],
+        correct: 1,
+        explanation: "غياب الثقة يؤدي لتأخير القرارات وزيادة التوتر."
+      },
+      {
+        id: 25,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A supervisor who recognizes diverse personalities and adapts leadership style uses:",
+        ar: "مشرف يدرك اختلاف الشخصيات ويكيّف أسلوب قيادته يستخدم:",
+        options: [
+          "Negotiation",
+          "Organizational culture",
+          "Social awareness",
+          "Self-acceptance"
+        ],
+        correct: 2,
+        explanation: "الوعي الاجتماعي يشمل فهم اختلاف الشخصيات والاستجابة لها بشكل مناسب."
+      },
+      {
+        id: 26,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A team entering the 'storming' phase is characterized by:",
+        ar: "الفريق في مرحلة الـ Storming يتميز بـ:",
+        options: [
+          "Task completion",
+          "Conflict and role clarification",
+          "Celebration",
+          "Separation"
+        ],
+        correct: 1,
+        explanation: "المرحلة العاصفة تتسم بوجود صراعات وتوضيح الأدوار."
+      },
+      {
+        id: 27,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A healthcare provider who identifies personal strengths and weaknesses to improve care demonstrates:",
+        ar: "مقدم رعاية صحية يحدد قوته وضعفه لتحسين الرعاية يُظهر:",
+        options: [
+          "Self-confidence",
+          "Self-awareness",
+          "Self-management",
+          "Emotional arousal"
+        ],
+        correct: 1,
+        explanation: "الوعي بالذات يعني إدراك نقاط القوة والضعف."
+      },
+      {
+        id: 28,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A workplace that rewards creativity and knowledge sharing promotes:",
+        ar: "مكان عمل يكافئ الإبداع ومشاركة المعرفة يعزز:",
+        options: [
+          "Inflexibility",
+          "Innovation",
+          "Chronic stress",
+          "Personal characteristics"
+        ],
+        correct: 1,
+        explanation: "المكافأة على الإبداع تشجع الابتكار داخل المؤسسة."
+      },
+      {
+        id: 29,
+        part: "Group B",
+        category: "Human Relations",
+        en: "An employee who avoids vague communication with patients demonstrates:",
+        ar: "موظف يتجنب التواصل الغامض مع المرضى يوضح:",
+        options: [
+          "Empathy",
+          "Effective human relations",
+          "Negotiation",
+          "Motivation"
+        ],
+        correct: 1,
+        explanation: "التواصل الواضح أحد أهم عناصر العلاقات الإنسانية الفعّالة."
+      },
+      {
+        id: 30,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A staff member who relies on peers for emotional support benefits from:",
+        ar: "موظف يعتمد على زملائه للدعم العاطفي يستفيد من تلبية أي احتياج؟",
+        options: [
+          "Social needs",
+          "Organizational culture",
+          "Trust",
+          "Negotiation"
+        ],
+        correct: 0,
+        explanation: "الدعم العاطفي من المجموعة يلبّي الاحتياجات الاجتماعية للفرد."
+      } 
+            ,
+      {
+        id: 31,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A manager who listens actively during staff complaints applies:",
+        ar: "مدير يستمع باهتمام لشكوى العاملين يطبّق:",
+        options: [
+          "Conflict resolution",
+          "Stress reduction",
+          "Self-awareness",
+          "Motivation"
+        ],
+        correct: 0,
+        explanation: "الاستماع الفعّال خطوة أساسية في حل النزاعات."
+      },
+      {
+        id: 32,
+        part: "Group B",
+        category: "Human Relations",
+        en: "When employees choose to stay because they feel valued, this highlights:",
+        ar: "عندما يظل الموظفون في العمل لأنهم يشعرون بالتقدير فهذا يبرز:",
+        options: [
+          "Retention",
+          "Job influence",
+          "Self-acceptance",
+          "Organizational culture"
+        ],
+        correct: 0,
+        explanation: "الشعور بالتقدير يزيد من احتفاظ المؤسسة بالموظفين (Retention)."
+      },
+      {
+        id: 33,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A worker who becomes stressed due to office politics experiences:",
+        ar: "عامل يتعرض للضغط بسبب صراعات ومشكلات السياسة داخل العمل يعاني من:",
+        options: [
+          "Acute stress",
+          "Chronic stress",
+          "Episodic acute stress",
+          "Eustress"
+        ],
+        correct: 2,
+        explanation: "الضغوط المتكررة بين الحين والآخر بسبب مواقف معينة تمثل الضغط الحاد المتكرر."
+      },
+      {
+        id: 34,
+        part: "Group B",
+        category: "Human Relations",
+        en: "When a technician anticipates challenges and takes risks, they build:",
+        ar: "فني يتوقع التحديات ويقبل المخاطرة يبني:",
+        options: [
+          "Empathy",
+          "Self-confidence",
+          "Self-disclosure",
+          "Motivation"
+        ],
+        correct: 1,
+        explanation: "مواجهة التحديات بنجاح تنمّي الثقة بالنفس."
+      },
+      {
+        id: 35,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A team that clearly divides work and shares information is fulfilling which need?",
+        ar: "فريق يقسّم العمل بوضوح ويتشارك المعلومات يحقق أي احتياج؟",
+        options: [
+          "Flexibility",
+          "Work group influence",
+          "Division of work",
+          "Organizational culture"
+        ],
+        correct: 2,
+        explanation: "التقسيم الواضح للعمل وتبادل المعلومات يلبّي احتياج تقسيم العمل."
+      },
+      {
+        id: 36,
+        part: "Group B",
+        category: "Human Relations",
+        en: "When staff respect differing perspectives and demonstrate openness, they display:",
+        ar: "احترام أفراد الفريق لوجهات النظر المختلفة والانفتاح يدل على:",
+        options: [
+          "Good negotiation",
+          "Successful team",
+          "Emotional arousal",
+          "Self-esteem"
+        ],
+        correct: 1,
+        explanation: "قبول الآراء المختلفة سمة للفريق الناجح."
+      },
+      {
+        id: 37,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A nurse who feels anxious daily due to workload exhibits:",
+        ar: "ممرضة تشعر بالقلق يوميًا بسبب ضغط العمل تُظهر:",
+        options: [
+          "Eustress",
+          "Episodic acute stress",
+          "Chronic stress",
+          "Acute stress"
+        ],
+        correct: 1,
+        explanation: "الضغط الحاد المتكرر يرتبط بمواقف متكررة في العمل."
+      },
+      {
+        id: 38,
+        part: "Group B",
+        category: "Human Relations",
+        en: "When a manager acknowledges employees' needs and goals, it supports:",
+        ar: "عندما يعترف المدير باحتياجات وأهداف العاملين فهو يدعم:",
+        options: [
+          "Optimum resource use",
+          "Conflict reduction",
+          "Social comparison",
+          "Storming"
+        ],
+        correct: 0,
+        explanation: "فهم احتياجات العاملين يساعد على الاستخدام الأمثل للموارد البشرية."
+      },
+      {
+        id: 39,
+        part: "Group B",
+        category: "Human Relations",
+        en: "An employee demonstrating self-disclosure is more likely to:",
+        ar: "موظف يمارس الإفصاح عن الذات بشكل مناسب يكون أكثر احتمالًا أن:",
+        options: [
+          "Hide personal information",
+          "Build stronger relationships",
+          "Cause misunderstandings",
+          "Increase stress"
+        ],
+        correct: 1,
+        explanation: "الإفصاح المناسب عن الذات يحسّن العلاقات ويزيد الثقة."
+      },
+      {
+        id: 40,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A technician who helps a 'difficult' patient by spending extra time shows:",
+        ar: "فني يساعد مريضًا «صعبًا» بقضاء وقت إضافي معه يُظهر:",
+        options: [
+          "Stress management",
+          "Kindness and flexibility",
+          "Self-awareness",
+          "Motivation"
+        ],
+        correct: 1,
+        explanation: "المرونة واللطف مع المريض تخفف التوتر وتحسّن التعاون."
+      },
+      {
+        id: 41,
+        part: "Group B",
+        category: "Human Relations",
+        en: "When a supervisor sets unrealistic rules without explanation, staff may lose:",
+        ar: "عندما يضع المشرف قواعد غير واقعية دون تفسير؛ العاملون قد يفقدون:",
+        options: [
+          "Trust",
+          "Social awareness",
+          "Motivation",
+          "Self-confidence"
+        ],
+        correct: 0,
+        explanation: "غياب الشرح والعدل يؤدي لفقدان الثقة في القيادة."
+      },
+      {
+        id: 42,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A team moving to high performance with minimal conflict is in which phase?",
+        ar: "فريق ينتقل إلى أداء عالٍ مع حد أدنى من الصراع يكون في مرحلة:",
+        options: [
+          "Performing",
+          "Norming",
+          "Forming",
+          "Storming"
+        ],
+        correct: 0,
+        explanation: "مرحلة Performing هي مرحلة الأداء العالي للفريق."
+      },
+      {
+        id: 43,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A staff member who admits errors and seeks feedback shows:",
+        ar: "موظف يعترف بأخطائه ويبحث عن التغذية الراجعة يُظهر:",
+        options: [
+          "Self-confidence",
+          "Self-disclosure",
+          "Social awareness",
+          "Motivation"
+        ],
+        correct: 1,
+        explanation: "الاعتراف بالأخطاء شكل من أشكال الإفصاح عن الذات الإيجابي."
+      },
+      {
+        id: 44,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A nurse who changes routines to accommodate a patient's cultural needs displays:",
+        ar: "ممرضة تغيّر روتينها لتلائم احتياجات المريض الثقافية تُظهر:",
+        options: [
+          "Organizational culture",
+          "Empathy",
+          "Negotiation",
+          "Job influence"
+        ],
+        correct: 1,
+        explanation: "مراعاة الخلفية الثقافية للمريض تعكس التعاطف الحقيقي."
+      },
+      {
+        id: 45,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A worker's expectations and aptitudes influencing performance refers to:",
+        ar: "توقعات العامل وقدراته التي تؤثر على الأداء تشير إلى:",
+        options: [
+          "Team influence",
+          "Personal characteristics",
+          "Family influence",
+          "Job influence"
+        ],
+        correct: 1,
+        explanation: "الخصائص الشخصية تشمل الاستعدادات والقدرات التي تؤثر على الأداء."
+      },
+      {
+        id: 46,
+        part: "Group B",
+        category: "Human Relations",
+        en: "A workplace that supports flexible team structures benefits from:",
+        ar: "مكان عمل يدعم هياكل فرق مرنة يستفيد من:",
+        options: [
+          "Organizational rigidity",
+          "Organizational flexibility",
+          "Stress",
+          "Self-management"
+        ],
+        correct: 1,
+        explanation: "المرونة التنظيمية تساعد على التكيّف مع التغيرات."
+      },
+      {
+        id: 47,
+        part: "Group B",
+        category: "Human Relations",
+        en: "One benefit of good human relations in the workplace is improved:",
+        ar: "أحد فوائد العلاقات الإنسانية الجيدة في العمل هو تحسن:",
+        options: [
+          "Noise levels",
+          "Productivity",
+          "Prestige",
+          "Salary"
+        ],
+        correct: 1,
+        explanation: "العلاقات الجيدة تزيد الرضا والإنتاجية في العمل."
+      },
+      {
+        id: 48,
+        part: "Group B",
+        category: "Human Relations",
+        en: "Good communication helps employees feel:",
+        ar: "التواصل الجيد يجعل الموظفين يشعرون بأنهم:",
+        options: [
+          "Ignored",
+          "Valued",
+          "Angry",
+          "Confused"
+        ],
+        correct: 1,
+        explanation: "إشراك العاملين وحسن التواصل يشعرهم بالتقدير."
+      },
+      {
+        id: 49,
+        part: "Group C",
+        category: "Ethics",
+        en: "Medical ethics primarily concerns:",
+        ar: "أخلاقيات المهنة الطبية تهتم أساسًا بـ:",
+        options: [
+          "Legal punishment",
+          "Moral principles guiding health professionals",
+          "Hospital financial policies",
+          "Government regulations"
+        ],
+        correct: 1,
+        explanation: "أخلاقيات الطب هي مبادئ أخلاقية تنظّم سلوك المهن الصحية."
+      },
+      {
+        id: 50,
+        part: "Group C",
+        category: "Ethics",
+        en: "\"Do no harm\" refers to which ethical principle?",
+        ar: "عبارة \"عدم إحداث ضرر\" تشير لأي مبدأ أخلاقي؟",
+        options: [
+          "Autonomy",
+          "Beneficence",
+          "Justice",
+          "Non‑maleficence"
+        ],
+        correct: 3,
+        explanation: "مبدأ عدم الإيذاء (Non‑maleficence) يعني تجنب إحداث الضرر بالمريض."
+      },
+      {
+        id: 51,
+        part: "Group C",
+        category: "Ethics",
+        en: "\"Doing good for the patient\" defines:",
+        ar: "\"فعل الخير للمريض\" يعرّف مبدأ:",
+        options: [
+          "Autonomy",
+          "Beneficence",
+          "Fidelity",
+          "Justice"
+        ],
+        correct: 1,
+        explanation: "مبدأ الإحسان Beneficence يعني السعي لمصلحة المريض."
+      },
+      {
+        id: 52,
+        part: "Group C",
+        category: "Ethics",
+        en: "Respecting patient independence refers to:",
+        ar: "احترام استقلالية المريض يشير إلى مبدأ:",
+        options: [
+          "Autonomy",
+          "Confidentiality",
+          "Beneficence",
+          "Fidelity"
+        ],
+        correct: 0,
+        explanation: "الاستقلالية تعني حق المريض في اتخاذ قراراته بنفسه."
+      },
+      {
+        id: 53,
+        part: "Group C",
+        category: "Ethics",
+        en: "Treating all patients fairly reflects:",
+        ar: "معاملة جميع المرضى بعدل تعكس مبدأ:",
+        options: [
+          "Justice",
+          "Advocacy",
+          "Beneficence",
+          "Fidelity"
+        ],
+        correct: 0,
+        explanation: "مبدأ العدالة يعني المساواة في المعاملة وتوزيع الموارد."
+      },
+      {
+        id: 54,
+        part: "Group C",
+        category: "Ethics",
+        en: "Maintaining patient privacy is part of:",
+        ar: "الحفاظ على خصوصية المريض جزء من:",
+        options: [
+          "Confidentiality",
+          "Family signs for the patient",
+          "Advocacy",
+          "Integrity"
+        ],
+        correct: 0,
+        explanation: "السرّية تعني حفظ أسرار وبيانات المريض."
+      },
+      {
+        id: 55,
+        part: "Group C",
+        category: "Ethics",
+        en: "A nurse providing care regardless of patient race or age supports:",
+        ar: "ممرضة تقدّم الرعاية بغض النظر عن العِرق أو العمر تدعم مبدأ:",
+        options: [
+          "Justice",
+          "Fidelity",
+          "Responsibility",
+          "Advocacy"
+        ],
+        correct: 0,
+        explanation: "العدالة تتضمن المساواة في الرعاية دون تمييز."
+      },
+      {
+        id: 56,
+        part: "Group C",
+        category: "Consent",
+        en: "Written consent is required for:",
+        ar: "الموافقة الكتابية مطلوبة لـ:",
+        options: [
+          "General examination",
+          "Blood pressure measurement",
+          "Endoscopy",
+          "Temperature check"
+        ],
+        correct: 2,
+        explanation: "الإجراءات الكبرى مثل المناظير والجراحات تحتاج موافقة مكتوبة."
+      },
+      {
+        id: 57,
+        part: "Group C",
+        category: "Consent",
+        en: "Implied consent is valid when:",
+        ar: "تُعد الموافقة الضمنية صحيحة عندما:",
+        options: [
+          "Patient signs a form",
+          "Patient holds out their arm for injection",
+          "Doctor orders it",
+          "A witness is present"
+        ],
+        correct: 1,
+        explanation: "مد ذراع المريض للحقن مثال كلاسيكي على الموافقة الضمنية."
+      },
+      {
+        id: 58,
+        part: "Group C",
+        category: "Consent",
+        en: "Consent is invalid when:",
+        ar: "تكون الموافقة غير صحيحة عندما تكون:",
+        options: [
+          "Written",
+          "Oral",
+          "Obtained through fraud",
+          "Voluntary"
+        ],
+        correct: 2,
+        explanation: "الاحتيال أو الخداع يبطل الموافقة القانونية."
+      },
+      {
+        id: 59,
+        part: "Group C",
+        category: "Confidentiality",
+        en: "Breaking confidentiality is allowed in cases of:",
+        ar: "يجوز كسر السرّية في حالات:",
+        options: [
+          "Divorce disputes",
+          "Infectious diseases posing community risk",
+          "Routine family inquiries",
+          "Patient job applications"
+        ],
+        correct: 1,
+        explanation: "الأمراض المعدية التي تهدد المجتمع من استثناءات السرية."
+      },
+      {
+        id: 60,
+        part: "Group C",
+        category: "Professional Misconduct",
+        en: "Advertising medical services excessively is considered:",
+        ar: "الإعلان المبالغ فيه عن الخدمات الطبية يُعد:",
+        options: [
+          "Accepted",
+          "Professional misconduct",
+          "Civil malpractice",
+          "Emergency exception"
+        ],
+        correct: 1,
+        explanation: "المبالغة في الدعاية من صور السلوك المهني غير اللائق."
+      }
+            ,
+      {
+        id: 61,
+        part: "Group C",
+        category: "Negligence",
+        en: "Maloccurrence refers to:",
+        ar: "مصطلح Maloccurrence يشير إلى:",
+        options: [
+          "Gross negligence",
+          "Predictable complications despite proper care",
+          "Criminal malpractice",
+          "Improper documentation"
+        ],
+        correct: 1,
+        explanation: "المال أوكرانس هو حدوث مضاعفات متوقعة رغم تقديم رعاية مناسبة."
+      },
+      {
+        id: 62,
+        part: "Group C",
+        category: "Negligence",
+        en: "A missed fracture due to poor assessment is an example of:",
+        ar: "كسر لم يُشخّص بسبب فحص سيئ يُعتبر مثالاً على:",
+        options: [
+          "Negligence",
+          "Advocacy",
+          "Non‑maleficence",
+          "Justice"
+        ],
+        correct: 0,
+        explanation: "إهمال الفحص المناسب يؤدي إلى إهمال مهني (Negligence)."
+      },
+      {
+        id: 63,
+        part: "Group C",
+        category: "Confidentiality",
+        en: "A nurse revealing patient information to friends violates:",
+        ar: "ممرضة تكشف معلومات المريض لأصدقائها تنتهك مبدأ:",
+        options: [
+          "Fidelity",
+          "Confidentiality",
+          "Advocacy",
+          "Autonomy"
+        ],
+        correct: 1,
+        explanation: "مشاركة أسرار المريض مع غير المخولين خرق واضح للسرّية."
+      },
+      {
+        id: 64,
+        part: "Group C",
+        category: "Malpractice",
+        en: "A surgeon performs a second non‑emergency procedure without consent. This is:",
+        ar: "جرّاح يجري إجراءً ثانيًا غير طارئ دون موافقة؛ يعد ذلك:",
+        options: [
+          "Acceptable",
+          "Criminal malpractice",
+          "Civil negligence",
+          "Valid privilege"
+        ],
+        correct: 2,
+        explanation: "إجراء غير طارئ دون موافقة غالبًا ما يصنّف كإهمال مدني."
+      },
+      {
+        id: 65,
+        part: "Group C",
+        category: "Public Safety",
+        en: "A TB‑positive cook refuses to stop working despite advice. The doctor should:",
+        ar: "طاهٍ مصاب بالدرن يرفض التوقف عن العمل رغم النصيحة؛ على الطبيب أن:",
+        options: [
+          "Maintain total secrecy",
+          "Inform employer for public safety",
+          "Allow patient to continue working",
+          "Tell patient's spouse only"
+        ],
+        correct: 1,
+        explanation: "السلامة العامة تسمح بإبلاغ صاحب العمل للحماية من العدوى."
+      },
+      {
+        id: 66,
+        part: "Group C",
+        category: "Autonomy",
+        en: "A female patient refuses examination by a male doctor even with a nurse present. The doctor should:",
+        ar: "مريضة ترفض فحصها بواسطة طبيب رجل حتى في وجود ممرضة؛ على الطبيب أن:",
+        options: [
+          "Force examination",
+          "Respect patient autonomy",
+          "Call security",
+          "Ignore refusal"
+        ],
+        correct: 1,
+        explanation: "احترام اختيار المريضة جزء من مبدأ الاستقلالية."
+      },
+      {
+        id: 67,
+        part: "Group C",
+        category: "Negligence",
+        en: "A sedated patient is left unattended in the radiology room and falls. This is:",
+        ar: "مريض تحت المهدئ تُرك دون إشراف في غرفة الأشعة فسقط؛ هذه حالة:",
+        options: [
+          "Criminal negligence",
+          "Privacy violation",
+          "Beneficence",
+          "Acceptable risk"
+        ],
+        correct: 0,
+        explanation: "ترك مريض مخدَّر دون مراقبة قد يصل لمستوى الإهمال الجنائي."
+      },
+      {
+        id: 68,
+        part: "Group C",
+        category: "Privileged Communication",
+        en: "In cases of privileged communication, a doctor is required to disclose information:",
+        ar: "في حالات التواصل المميّز (Privileged) يجب على الطبيب إفشاء المعلومات:",
+        options: [
+          "For patient entertainment",
+          "Under court order or public health necessity",
+          "When relatives ask casually",
+          "For research without consent"
+        ],
+        correct: 1,
+        explanation: "أوامر المحكمة أو ضرورات الصحة العامة قد تُلزم بالإفصاح."
+      },
+      {
+        id: 69,
+        part: "Group C",
+        category: "Negligence",
+        en: "Direct causation in negligence requires:",
+        ar: "السببية المباشرة في الإهمال تتطلب:",
+        options: [
+          "Financial loss only",
+          "Proof that breach caused patient harm",
+          "Patient disagreement",
+          "Nurse documentation"
+        ],
+        correct: 1,
+        explanation: "يجب إثبات أن الخطأ المهني كان سببًا مباشرًا في الضرر."
+      },
+      {
+        id: 70,
+        part: "Group C",
+        category: "Negligence",
+        en: "A diagnostic misadventure is:",
+        ar: "Diagnostic misadventure هو:",
+        options: [
+          "Intentional mistake",
+          "Use of wrong technique deliberately",
+          "Accidental injury during diagnostic procedures",
+          "Criminal misconduct"
+        ],
+        correct: 2,
+        explanation: "هو إصابة عَرَضية حدثت أثناء إجراء تشخيصي مشروع."
+      },
+      {
+        id: 71,
+        part: "Group C",
+        category: "Negligence",
+        en: "A patient experiencing anaphylaxis from penicillin despite proper sensitivity testing represents:",
+        ar: "مريض يصاب بحساسية مفرطة للبنسلين رغم إجراء اختبارات حساسية صحيحة؛ يمثل ذلك:",
+        options: [
+          "Maloccurrence",
+          "Civil negligence",
+          "Criminal malpractice",
+          "Advocacy"
+        ],
+        correct: 0,
+        explanation: "مضاعفة غير متوقعة رغم اتباع الإجراءات الصحيحة تُعد مال أوكرانس."
+      },
+      {
+        id: 72,
+        part: "Group C",
+        category: "Negligence",
+        en: "A patient dies from overdose after technologist injects wrong concentration. This is:",
+        ar: "مريض يتوفى بعد جرعة زائدة بسبب تركيز دواء خاطئ حُقن بواسطة التقني؛ هذا:",
+        options: [
+          "Act of God",
+          "Gross negligence",
+          "Informed refusal",
+          "Therapeutic privilege"
+        ],
+        correct: 1,
+        explanation: "خطأ جسيم في الجرعة يندرج تحت الإهمال الجسيم (Gross negligence)."
+      },
+      {
+        id: 73,
+        part: "Group C",
+        category: "Negligence",
+        en: "A patient becomes quadriplegic after being forced into an abnormal position during CT. This is:",
+        ar: "مريض يصاب بشلل رباعي بعد إجباره على وضعية غير طبيعية أثناء فحص CT؛ هذه:",
+        options: [
+          "Civil negligence",
+          "Criminal negligence",
+          "Professional secrecy violation",
+          "Acceptable due to patient request"
+        ],
+        correct: 1,
+        explanation: "إجبار المريض على وضع ضار يؤدي لإصابة خطيرة قد يرقى لإهمال جنائي."
+      },
+      {
+        id: 74,
+        part: "Group C",
+        category: "Negligence",
+        en: "A patient falls during chest X‑ray after technician falsely assured support. This is a breach of:",
+        ar: "مريض يسقط أثناء أشعة صدر بعد أن طمأنه الفني كذبًا بأنه يدعمه؛ هذا إخلال بـ:",
+        options: [
+          "Justice",
+          "Duty of care",
+          "Fidelity",
+          "Professional secrecy"
+        ],
+        correct: 1,
+        explanation: "الفني أخفق في واجب العناية بالمريض أثناء الإجراء."
+      },
+      {
+        id: 75,
+        part: "Group C",
+        category: "Negligence",
+        en: "A physician fails to refer a patient with worsening cardiac symptoms, causing harm. This represents:",
+        ar: "طبيب لم يُحِل مريضًا تتفاقم أعراضه القلبية مما سبب ضررًا؛ يمثل ذلك:",
+        options: [
+          "Maloccurrence",
+          "Therapeutic privilege",
+          "Dereliction of duty",
+          "Misadventure"
+        ],
+        correct: 2,
+        explanation: "عدم اتخاذ الإجراء الواجب (الإحالة) يمثل تقصيرًا في الواجب."
+      },
+      {
+        id: 76,
+        part: "Group C",
+        category: "Malpractice",
+        en: "A lab report error leads to delayed cancer diagnosis. This constitutes:",
+        ar: "خطأ في تقرير معمل يؤدي لتأخر تشخيص السرطان؛ يُعد:",
+        options: [
+          "Payment issue",
+          "Laboratory malpractice",
+          "Justice",
+          "Advocacy"
+        ],
+        correct: 1,
+        explanation: "الأخطاء المعملية التي تسبب ضررًا تعد سوء ممارسة معملية."
+      },
+      {
+        id: 77,
+        part: "Group C",
+        category: "Consent",
+        en: "Contributory negligence by the patient can:",
+        ar: "إهمال المريض المساهم (Contributory) يمكن أن:",
+        options: [
+          "Strengthen malpractice claims",
+          "Reduce the doctor's liability",
+          "Exempt the doctor always",
+          "Have no legal effect"
+        ],
+        correct: 1,
+        explanation: "مساهمة المريض في الخطأ قد تقلل مسؤولية الطبيب القانونية."
+      },
+      {
+        id: 78,
+        part: "Group C",
+        category: "Legal",
+        en: "A doctor examining an accused person without consent is legal if:",
+        ar: "فحص طبيب لمتهم دون موافقة يكون قانونيًا إذا كان:",
+        options: [
+          "Doctor feels it is necessary",
+          "Evidence is required for investigation",
+          "Family requests it",
+          "Nurse authorizes it"
+        ],
+        correct: 1,
+        explanation: "الطب الشرعي بطلب من جهات التحقيق يُعد استثناءً لمبدأ الموافقة."
+      },
+      {
+        id: 79,
+        part: "Group C",
+        category: "Public Safety",
+        en: "A doctor must reveal patient information to avoid:",
+        ar: "يجب على الطبيب كشف معلومات المريض لتجنب:",
+        options: [
+          "Professional secrecy",
+          "Public danger",
+          "Patient anxiety",
+          "Administrative delays"
+        ],
+        correct: 1,
+        explanation: "عند وجود خطر عام، حماية المجتمع قد تتقدم على السرية."
+      },
+      {
+        id: 80,
+        part: "Group C",
+        category: "Ethics",
+        en: "To avoid negligence claims, physicians should:",
+        ar: "لتجنّب دعاوى الإهمال يجب على الأطباء:",
+        options: [
+          "Guarantee cures",
+          "Maintain proper and legible records",
+          "Refuse consultations",
+          "Ignore sensitivity testing"
+        ],
+        correct: 1,
+        explanation: "التوثيق الجيد والسجلات الواضحة من أهم وسائل الحماية القانونية."
+      }
+      ,
+      {
+        id: 81,
+        part: "Group D",
+        category: "Ethics (T/F)",
+        en: "Medical ethics is concerned with moral principles guiding healthcare professionals.",
+        ar: "أخلاقيات الطب تهتم بالمبادئ الأخلاقية التي توجه المهن الصحية.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "تعريف أخلاقيات المهنة الطبية هو مجموعة مبادئ تضبط سلوك الممارسين الصحيين."
+      },
+      {
+        id: 82,
+        part: "Group D",
+        category: "Ethics (T/F)",
+        en: "Ethics and law are identical concepts with the same purpose.",
+        ar: "الأخلاق والقانون مفهومان متماثلان ولهما نفس الهدف.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "الأخلاق تهتم بما هو صواب أخلاقيًا، والقانون بما هو ملزم قانونيًا؛ بينهما تقاطع لكنهما غير متطابقين."
+      },
+      {
+        id: 83,
+        part: "Group D",
+        category: "Ethics (T/F)",
+        en: "Non‑maleficence means \"do no harm\".",
+        ar: "مبدأ عدم الإيذاء يعني \"عدم إحداث ضرر\".",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "Non‑maleficence يُترجم بعدم إلحاق الأذى بالمريض."
+      },
+      {
+        id: 84,
+        part: "Group D",
+        category: "Ethics (T/F)",
+        en: "Beneficence requires healthcare workers to act in the best interest of the patient.",
+        ar: "مبدأ الإحسان يطلب من العاملين في الصحة التصرف لصالح المريض.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "جوهر مبدأ Beneficence هو تحقيق مصلحة المريض قدر الإمكان."
+      },
+      {
+        id: 85,
+        part: "Group D",
+        category: "Ethics (T/F)",
+        en: "Autonomy means the healthcare provider has full authority to make all decisions.",
+        ar: "الاستقلالية تعني أن مقدم الرعاية هو صاحب السلطة الكاملة في القرارات.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "الاستقلالية تخص المريض وحقه في اتخاذ القرار، لا الطبيب."
+      },
+      {
+        id: 86,
+        part: "Group D",
+        category: "Ethics (T/F)",
+        en: "Justice means fairness in treating all patients equally.",
+        ar: "مبدأ العدالة يعني الإنصاف في معاملة جميع المرضى بالتساوي.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "Justice يرتبط بتوزيع متكافئ للرعاية والموارد بين المرضى."
+      },
+      {
+        id: 87,
+        part: "Group D",
+        category: "Ethics (T/F)",
+        en: "Advocacy involves protecting the patient's rights and interests.",
+        ar: "المدافعة تعنى بحماية حقوق المريض ومصالحه.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "الممرض أو مقدم الخدمة يعمل كمُدافع عن المريض أمام النظام الصحي."
+      },
+      {
+        id: 88,
+        part: "Group D",
+        category: "Ethics (T/F)",
+        en: "Fidelity refers to truthfulness and loyalty toward patients.",
+        ar: "الوفاء يعني الصدق والولاء تجاه المرضى.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "Fidelity يتضمن الالتزام بالوعود والصدق مع المريض."
+      },
+      {
+        id: 89,
+        part: "Group D",
+        category: "Ethics (T/F)",
+        en: "Confidentiality means disclosure of all patient information to family members.",
+        ar: "السرّية تعني كشف كل معلومات المريض لأفراد الأسرة.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "السرّية تعني عدم الإفصاح إلا لمن له حق قانوني أو موافقة المريض."
+      },
+      {
+        id: 90,
+        part: "Group D",
+        category: "Consent (T/F)",
+        en: "Written consent is required for general physical examinations.",
+        ar: "تُطلب الموافقة الكتابية في الفحص البدني الروتيني العام.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "الفحص العام يكفي له عادةً الموافقة الشفهية أو الضمنية."
+      },
+      {
+        id: 91,
+        part: "Group D",
+        category: "Consent (T/F)",
+        en: "Oral consent is sufficient for rectal and vaginal examinations.",
+        ar: "الموافقة الشفهية كافية للفحص المستقيمي والمهبلي.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "في المنهج لديك مذكور أن الموافقة الشفهية تُعد كافية لتلك الفحوص مع التوثيق المناسب."
+      },
+      {
+        id: 92,
+        part: "Group D",
+        category: "Consent (T/F)",
+        en: "Implied consent occurs when a patient extends their arm for an injection.",
+        ar: "تحدث الموافقة الضمنية عندما يمد المريض ذراعه للحقن.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "هذه مثال كلاسيكي على موافقة ضمنية بالفعل لا بالقول."
+      },
+      {
+        id: 93,
+        part: "Group D",
+        category: "Consent (T/F)",
+        en: "Consent obtained through coercion is valid.",
+        ar: "الموافقة التي تُنتزع بالإكراه تُعتبر صحيحة.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "الإكراه يبطل عنصر الرضائية في أي موافقة قانونية."
+      },
+      {
+        id: 94,
+        part: "Group D",
+        category: "Consent (T/F)",
+        en: "The age of consent in Egypt is 21 years.",
+        ar: "سن الموافقة القانونية في مصر هو 21 سنة.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "مذكور في ورقتك أن سن الموافقة 21 عامًا."
+      },
+      {
+        id: 95,
+        part: "Group D",
+        category: "Consent (T/F)",
+        en: "Emergency treatment may be given without consent to save life or limb.",
+        ar: "يمكن إعطاء العلاج الطارئ دون موافقة لإنقاذ الحياة أو الطرف.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "حالة الطوارئ من الاستثناءات المعروفة لشرط الحصول على موافقة مسبقة."
+      },
+      {
+        id: 96,
+        part: "Group D",
+        category: "Consent (T/F)",
+        en: "Incompetent patients may be treated without consent.",
+        ar: "يمكن علاج المرضى غير القادرين على اتخاذ القرار دون موافقتهم.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "يتم الاعتماد على ولي الأمر أو مبدأ المصلحة الفضلى للمريض غير الكفء."
+      },
+      {
+        id: 97,
+        part: "Group D",
+        category: "Legal (T/F)",
+        en: "Reporting notifiable diseases is a legal requirement.",
+        ar: "الإبلاغ عن الأمراض التبليغية واجب قانوني.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "القانون يُلزم مقدمي الخدمة بالتبليغ عن بعض الأمراض المعدية."
+      },
+      {
+        id: 98,
+        part: "Group D",
+        category: "Negligence (T/F)",
+        en: "Missed fractures due to inadequate examination represent negligence.",
+        ar: "الكسور غير المكتشفة بسبب فحص غير كافٍ تمثل إهمالاً.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "عدم الفحص الجيد يؤدي إلى إهمال في التشخيص."
+      },
+      {
+        id: 99,
+        part: "Group D",
+        category: "Negligence (T/F)",
+        en: "Criminal malpractice involves minor, harmless mistakes.",
+        ar: "سوء الممارسة الجنائي يشمل الأخطاء البسيطة غير الضارة.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "المالبراكتس الجنائي يرتبط بأخطاء جسيمة تسبب أذى واضحًا."
+      },
+      {
+        id: 100,
+        part: "Group D",
+        category: "Negligence (T/F)",
+        en: "Mislabeling radiology films may have legal consequences.",
+        ar: "الخطأ في وضع بيانات أفلام الأشعة قد يسبب عواقب قانونية.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "سوء التسمية قد يؤدي لتشخيص خاطئ ودعوى إهمال."
+      }
+      ,
+      {
+        id: 101,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Effective conflict resolution strengthens workplace relationships.",
+        ar: "حل النزاعات بشكل فعّال يقوّي العلاقات في مكان العمل.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "التعامل البنّاء مع الخلافات يزيد الثقة والتعاون بين الزملاء."
+      },
+      {
+        id: 102,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Self-confidence always guarantees positive human relations.",
+        ar: "الثقة بالنفس تضمن دائمًا علاقات إنسانية إيجابية.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "قد تكون الثقة مفرطة أو غير مصحوبة بتعاطف فتسبب مشكلات."
+      },
+      {
+        id: 103,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Chronic stress can last for months or years and is the most damaging form of stress.",
+        ar: "الضغط المزمن قد يستمر لشهور أو سنوات وهو أكثر أنواع الضغط ضررًا.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "استمرار الضغط لفترات طويلة يرفع مخاطر صحية ونفسية كبيرة."
+      },
+      {
+        id: 104,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Social awareness requires understanding others' emotions even without agreement.",
+        ar: "الوعي الاجتماعي يتطلب فهم مشاعر الآخرين حتى لو لم نتفق معهم.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "الهدف هو الفهم والتقدير لا بالضرورة الموافقة."
+      },
+      {
+        id: 105,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "A group and a team function identically in terms of accountability.",
+        ar: "المجموعة والفريق يعملان بنفس طريقة المساءلة تمامًا.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "في الفريق تكون المسؤولية مشتركة عن النتائج أكثر من المجموعة العادية."
+      },
+      {
+        id: 106,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Trust reduces productivity in most workplace environments.",
+        ar: "الثقة تقلل الإنتاجية في معظم بيئات العمل.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "الثقة عادةً ترفع التعاون والإنتاجية ولا تقللها."
+      },
+      {
+        id: 107,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "High self-acceptance improves interpersonal relationships.",
+        ar: "تقبّل الذات بدرجة عالية يحسّن العلاقات مع الآخرين.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "من يتقبل نفسه يكون أكثر قدرة على تقبل الآخرين."
+      },
+      {
+        id: 108,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Organizational culture rarely affects employee behavior.",
+        ar: "الثقافة التنظيمية نادرًا ما تؤثر في سلوك الموظفين.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "قيم وثقافة المؤسسة من أقوى المؤثرات على السلوك في العمل."
+      },
+      {
+        id: 109,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Empathy is unnecessary in healthcare communication.",
+        ar: "التعاطف غير ضروري في تواصل الرعاية الصحية.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "التعاطف عنصر أساسي لنجاح تواصل مقدم الخدمة مع المريض."
+      },
+      {
+        id: 110,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Conflict during the storming phase is normal and expected.",
+        ar: "وجود صراع في مرحلة الـ Storming أمر طبيعي ومتوقَّع.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "المرحلة العاصفة تتميز بتعارض الآراء قبل الوصول للانسجام."
+      },
+      {
+        id: 111,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Stress is always harmful and has no positive form.",
+        ar: "الضغط النفسي دائمًا مضرّ ولا يوجد له شكل إيجابي.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "هناك Eustress (ضغط إيجابي) قد يحفّز الأداء في مواقف معينة."
+      },
+      {
+        id: 112,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Motivation cannot be influenced by workplace recognition.",
+        ar: "لا يمكن للتقدير في مكان العمل أن يؤثر في الدافعية.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "الاعتراف بالجهد والإنجاز من أهم محفزات العاملين."
+      },
+      {
+        id: 113,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "A positive attitude helps in building good relationships.",
+        ar: "الاتجاه الإيجابي يساعد في بناء علاقات جيدة.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "النظرة الإيجابية تسهّل التعاون وتقلل الصراعات."
+      },
+      {
+        id: 114,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Acute stress always lasts for months or years.",
+        ar: "الضغط الحاد دائمًا يستمر لشهور أو سنوات.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 1,
+        explanation: "الضغط الحاد عادةً قصير المدى ويرتبط بموقف واحد."
+      },
+      {
+        id: 115,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Chronic stress lasts for months or years.",
+        ar: "الضغط المزمن يستمر لشهور أو سنوات.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "استمراره الطويل هو ما يميّزه عن الأنواع الأخرى."
+      },
+      {
+        id: 116,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Listening carefully is important for good communication.",
+        ar: "الاستماع الجيد مهم للتواصل الجيّد.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "الاستماع الفعّال نصف عملية التواصل الناجحة."
+      },
+      {
+        id: 117,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "A difficult patient may simply need clearer communication.",
+        ar: "المريض «الصعب» قد يحتاج فقط إلى تواصل أوضح.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "كثير من الصعوبات ناتجة عن سوء فهم التعليمات أو المصطلحات."
+      },
+      {
+        id: 118,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Reducing misunderstandings requires clear communication.",
+        ar: "تقليل سوء الفهم يحتاج إلى تواصل واضح.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "الرسائل الواضحة والبسيطة تقلل احتمالية التفسير الخاطئ."
+      },
+      {
+        id: 119,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "Trust helps build stronger relationships between staff.",
+        ar: "الثقة تساعد على بناء علاقات أقوى بين العاملين.",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "الثقة المتبادلة أساس التعاون والعمل الجماعي الجيد."
+      },
+      {
+        id: 120,
+        part: "Group D",
+        category: "Human Relations (T/F)",
+        en: "The first stage of team development is forming.",
+        ar: "أول مرحلة من مراحل تطور الفريق هي التكوين (Forming).",
+        options: ["True", "False", "Not applicable", "—"],
+        correct: 0,
+        explanation: "يبدأ الفريق بمرحلة التكوين قبل الدخول في الصراع والتنظيم."
+      }
+
+
+
+    ];
+
+    // ========= 2) حالة التطبيق =========
+    let answeredCount = 0;
+    let correctCount = 0;
+    const answeredQuestions = new Set();
+
+    const questionsContainer = document.getElementById("questionsContainer");
+    const noResultsEl = document.getElementById("noResults");
+    const searchInput = document.getElementById("searchInput");
+
+    const groupFilters = document.getElementById("groupFilters");
+    const categoryFilters = document.getElementById("categoryFilters");
+
+    const statTotal = document.getElementById("stat-total");
+    const statAnswered = document.getElementById("stat-answered");
+    const statCorrect = document.getElementById("stat-correct");
+    const statPercentage = document.getElementById("stat-percentage");
+
+    let activeGroup = "all";
+    let activeCategory = "all";
+
+    function updateStats() {
+      const total = allQuestions.length;
+      statTotal.textContent = total.toString();
+      statAnswered.textContent = answeredCount.toString();
+      statCorrect.textContent = correctCount.toString();
+      const percentage = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+      statPercentage.textContent = percentage + "%";
+    }
+
+    function createQuestionCard(q, index) {
+      const card = document.createElement("article");
+      card.className = "question-card";
+
+      const header = document.createElement("div");
+      header.className = "question-header";
+
+      const meta = document.createElement("div");
+      meta.className = "question-meta";
+
+      const num = document.createElement("div");
+      num.className = "question-number";
+      num.textContent = (index + 1).toString();
+
+      const badges = document.createElement("div");
+      badges.className = "question-meta";
+      const partBadge = document.createElement("span");
+      partBadge.className = "badge";
+      partBadge.textContent = q.part;
+
+      const catBadge = document.createElement("span");
+      catBadge.className = "badge badge-secondary";
+      catBadge.textContent = q.category;
+
+      badges.appendChild(partBadge);
+      badges.appendChild(catBadge);
+
+      header.appendChild(badges);
+      header.appendChild(num);
+
+      const textEn = document.createElement("p");
+      textEn.className = "question-text-en";
+      textEn.textContent = q.en;
+
+      const textAr = document.createElement("p");
+      textAr.className = "question-text-ar";
+      textAr.textContent = q.ar;
+
+      const optionsGrid = document.createElement("div");
+      optionsGrid.className = "options-grid";
+
+      const answerBox = document.createElement("div");
+      answerBox.className = "answer-box";
+      answerBox.style.display = "none";
+
+      let alreadyAnswered = false;
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.textContent = String.fromCharCode(65 + i) + ". " + opt;
+
+        btn.addEventListener("click", () => {
+          const optionButtons = optionsGrid.querySelectorAll(".option-btn");
+          optionButtons.forEach(b => {
+            b.classList.remove("correct", "incorrect");
+          });
+
+          optionButtons.forEach((b, idx) => {
+            if (idx === q.correct) {
+              b.classList.add("correct");
+            }
+          });
+
+          if (i !== q.correct) {
+            btn.classList.add("incorrect");
+          }
+
+          if (!alreadyAnswered) {
+            alreadyAnswered = true;
+            answeredQuestions.add(q.id);
+            answeredCount = answeredQuestions.size;
+            if (i === q.correct) {
+              correctCount++;
+            }
+            updateStats();
+          }
+
+          answerBox.style.display = "block";
+          answerBox.innerHTML =
+            "<strong>Correct answer: " +
+            String.fromCharCode(65 + q.correct) +
+            " - " +
+            q.options[q.correct] +
+            "</strong><br>" +
+            q.explanation;
+        });
+
+        optionsGrid.appendChild(btn);
+      });
+
+      card.appendChild(header);
+      card.appendChild(textEn);
+      card.appendChild(textAr);
+      card.appendChild(optionsGrid);
+      card.appendChild(answerBox);
+
+      return card;
+    }
+
+    function renderQuestions() {
+      questionsContainer.innerHTML = "";
+      const query = searchInput.value.trim().toLowerCase();
+
+      const filtered = allQuestions.filter(q => {
+        const matchesGroup = activeGroup === "all" || q.part === activeGroup;
+        const matchesCategory = activeCategory === "all" || q.category === activeCategory;
+
+        const text = (q.en + " " + q.ar + " " + q.part + " " + q.category).toLowerCase();
+        const matchesSearch = query === "" || text.includes(query);
+
+        return matchesGroup && matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        noResultsEl.style.display = "block";
+        return;
+      } else {
+        noResultsEl.style.display = "none";
+      }
+
+      filtered.forEach((q, idx) => {
+        const card = createQuestionCard(q, idx);
+        questionsContainer.appendChild(card);
+      });
+    }
+
+    function handleFilterClick(container, type) {
+      container.addEventListener("click", (e) => {
+        const btn = e.target.closest(".btn-filter");
+        if (!btn) return;
+
+        Array.from(container.querySelectorAll(".btn-filter")).forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        if (type === "group") {
+          activeGroup = btn.dataset.group;
+        } else {
+          activeCategory = btn.dataset.category;
+        }
+        renderQuestions();
+      });
+    }
+
+    searchInput.addEventListener("input", () => {
+      renderQuestions();
+    });
+
+    handleFilterClick(groupFilters, "group");
+    handleFilterClick(categoryFilters, "category");
+
+    // تهيئة أولية
+    updateStats();
+    renderQuestions();
+  </script>
+</body>
+</html>
